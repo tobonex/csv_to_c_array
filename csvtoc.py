@@ -1,9 +1,8 @@
+import argparse
 
-filename = 'dat.csv'
-
-def csvtoc():
+def csvtoc(output,input):
     import csv
-    with open(filename, newline='') as csvfile:
+    with open(input, newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         buf = 'int array[][] ={ \r\n{'
         for idx,row in enumerate(spamreader):
@@ -17,7 +16,7 @@ def csvtoc():
             buf += '}'
         buf += '\r\n};'
         print(buf)
-        with open('dat.c', "w") as file:
+        with open(output, "w") as file:
             file.write(buf)
             file.close()
 
@@ -25,6 +24,15 @@ def csvtoc():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    csvtoc()
+    parser = argparse.ArgumentParser(
+        prog='csvtoc',
+        description='Parse csv data into c array',
+        epilog='')
+    parser.add_argument('input_file')
+    parser.add_argument('output_file')
+    args = parser.parse_args()
+    print(args.input_file)
+    print(args.output_file)
+    csvtoc(args.output_file, args.input_file)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
